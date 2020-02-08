@@ -24,11 +24,12 @@
                 <v-spacer />
               </v-toolbar>
               <v-card-text>
-                <v-form>
+                <v-form >
                   <v-text-field
                     label="Email"
                     name="login"
                     type="text"
+                    v-model="email"
                   />
 
                   <v-text-field
@@ -36,12 +37,19 @@
                     label="Password"
                     name="password"
                     type="password"
+                    v-model="password"
                   />
                 </v-form>
               </v-card-text>
-              <v-card-actions>
-                <v-spacer />
-                <v-btn color="primary">Login</v-btn>
+              <v-card-actions
+                class="justify-space-around">
+                <div class="error" v-if="error">{{error.message}}</div>
+                <v-btn 
+                  color="primary"
+                  @click="userLogin()"
+                >
+                Login
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -52,10 +60,32 @@
 </template>
 
 <script>
+import * as firebase from 'firebase/app'
+import 'firebase/auth'
+
   export default {
-    props: {
-      source: String,
+    data (){
+      return {
+      email: '',
+      password: '',
+      error: false,
+      }
     },
+    methods: {
+      userLogin() {
+        this.email.toString()
+        firebase
+          .auth()
+          .signInWithEmailAndPassword(this.email, this.password)
+          .then(data => {
+            console.log(data)
+            this.$router.push('/secret')
+          })
+          .catch(error => (this.error = error))
+
+
+      }
+    }
   }
 </script>
 

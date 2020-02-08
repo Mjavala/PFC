@@ -40,13 +40,22 @@
             Sign-up
           </v-btn>
         </nuxt-link>
-        <nuxt-link to="login">
+        <nuxt-link v-if="!loggedIn" to="login">
           <v-btn 
             color="primary"
-            class="mx-2">
+            class="mx-2"
+          >
             Login
           </v-btn>
         </nuxt-link>
+        <div v-if="loggedIn" @click="logout" to="login">
+          <v-btn 
+            color="primary"
+            class="mx-2"
+          >
+            Logout
+          </v-btn>
+        </div>
 
         <nuxt-link to="secret">
           <v-btn 
@@ -73,11 +82,16 @@
 </template>
 
 <script>
+import * as firebase from 'firebase/app'
+import 'firebase/auth'
+import Cookies from 'js-cookie'
+
 export default {
   data () {
     return {
       clipped: false,
       drawer: false,
+      loggedIn: false,
       fixed: false,
       items: [
         {
@@ -94,6 +108,39 @@ export default {
       miniVariant: false,
       right: true,
       title: 'PFC'
+    }
+  },
+  mounted(){
+    this.userState()
+  },
+  methods: {
+    userState(){
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          // User is signed in.
+          console.log('signed in')
+          firebase
+            .auth()
+            .currentUser.getIdToken(true)
+            .then(token => Cookies.set('access_token', token))
+          this.loggedIn = true
+        } else {
+          Cookies.remove('access_token')
+          // if (Cookies.set('access_token', 'blah')) {
+          // }
+          // No user is signed in.
+          this.loggedIn = false
+          console.log('signed out', this.loggedIn)
+        }
+      })
+    },
+    logout() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.push('/')
+        })
     }
   }
 }
