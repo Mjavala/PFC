@@ -1,6 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
+  vendor: ['axios', 'babel-polyfill'],
   mode: 'universal',
   /*
   ** Headers of the page
@@ -16,6 +17,19 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
+  },
+  /* BABEL */
+  babel: {
+    presets: [
+      'es2015',
+      'stage-0'
+    ],
+    plugins: [
+      ['transform-runtime', {
+        'polyfill': true,
+        'regenerator': true,
+      }]
+    ],
   },
   /*
   ** Customize the progress-bar color

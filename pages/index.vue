@@ -1,20 +1,24 @@
 <template>
+<v-container class="logos">
   <v-layout
-    column
-    justify-center
-    align-center
-  >
-    <v-flex
-      xs12
-      sm8
-      md6
+      column
+      justify-center
+      align-center
+      class="logos"
     >
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-    </v-flex>
-  </v-layout>
+      <v-flex
+        xs12
+        sm8
+        md6
+      >
+        <div class="text-center">
+          <logo />
+          <vuetify-logo />
+        </div>
+      </v-flex>
+    </v-layout>
+</v-container>
+
 </template>
 
 <script>
@@ -28,3 +32,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.logos{
+  height: 100vh;
+}
+</style>
